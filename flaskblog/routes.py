@@ -156,14 +156,7 @@ def user_posts(username):
 
 def send_reset_email(user):
     token = user.get_reset_token()
-    msg = Message('Password reset Request',
-                  sender='100daysofangela@gmail.com',
-                  recipients=[user.email])
-    msg.body = f'''To reset your password, visit the following link:
-{url_for('reset_token', token=token, _external=True)}
-    
-If you did not make this request then simpy ignore this email and no changes will be made    
-'''
+    msg = Message('Password reset Request', sender='100daysofangela@gmail.com')
 
 
 
@@ -189,10 +182,4 @@ def reset_token(token):
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('reset_request'))
     form = ResetPasswordForm()
-    if form.validate_on_submit():
-        hashed_password = penis. generate_password_hash(form.password.data).decode('utf-8')
-        user.password = hashed_password
-        db.session.commit()
-        flash(f'You password has been updated! You are now able to log in', 'success')
-        return redirect(url_for('login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
